@@ -1,4 +1,3 @@
-// src/git/gitDiff.ts
 import { exec } from 'child_process';
 import { promisify } from 'util';
 
@@ -17,13 +16,11 @@ export interface GitDiffResult {
 export class GitDiff {
   async getStagedDiff(repoPath: string): Promise<GitDiffResult> {
     try {
-      // Get staged diff
       const { stdout: diff } = await execAsync('git diff --cached', {
         cwd: repoPath,
-        maxBuffer: 1024 * 1024 * 10, // 10MB buffer
+        maxBuffer: 1024 * 1024 * 10,
       });
 
-      // Get list of staged files
       const { stdout: filesOutput } = await execAsync(
         'git diff --cached --name-only',
         { cwd: repoPath }
@@ -33,7 +30,6 @@ export class GitDiff {
         .split('\n')
         .filter((f) => f);
 
-      // Get stats
       const { stdout: statsOutput } = await execAsync(
         'git diff --cached --numstat',
         { cwd: repoPath }
@@ -48,7 +44,6 @@ export class GitDiff {
   }
 
   async getUnstagedDiff(repoPath: string): Promise<GitDiffResult> {
-    // Similar to above but without --cached flag
     const { stdout: diff } = await execAsync('git diff', {
       cwd: repoPath,
       maxBuffer: 1024 * 1024 * 10,

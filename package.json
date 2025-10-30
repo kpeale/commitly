@@ -15,11 +15,19 @@
       {
         "command": "commitly.generateCommitMessage",
         "title": "Commitly: Generate Commit Message",
-        "icon": "$(sparkle)"
+        "icon": "$(zap)"
       },
       {
         "command": "commitly.resetApiKey",
-        "title": "Commitly: Reset Gemini API Key"
+        "title": "Commitly: Reset Gemini API Key",
+        "icon": "$(key)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "commitly.resetApiKey",
+        "key": "ctrl+5",
+        "mac": "cmd+5"
       }
     ],
     "menus": {

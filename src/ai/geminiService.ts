@@ -20,7 +20,7 @@ export class GeminiService {
 
       if (geminiApiKey) {
         await this.context.secrets.store('geminiApiKey', geminiApiKey);
-        vscode.window.showInformationMessage(' Gemini API key saved securely!');
+        vscode.window.showInformationMessage('✅ Gemini API key saved securely!');
       } else {
         vscode.window.showErrorMessage(
           ' Gemini API key is required to use Commitly.'
@@ -32,38 +32,89 @@ export class GeminiService {
     return geminiApiKey;
   }
 
-  public async generateCommitMessage(diff: string): Promise<string | null> {
+  public async generateCommitMessage(
+    diff: string,
+    files: string[] = [],
+    stats: any = { additions: 0, deletions: 0, filesChanged: 0 }
+  ): Promise<string | null> {
     const geminiApiKey = await this.getApiKey();
     if (!geminiApiKey) {
       return null;
     }
 
     try {
-      // Fixed: Pass API key as string directly, not as object
       const client = new GoogleGenerativeAI(geminiApiKey);
-
+      
+      
       const model = client.getGenerativeModel({
-        model: 'gemini-2.0-flash-exp',
+        model: 'gemini-2.5-pro',
       });
 
       vscode.window.showInformationMessage(
         ' Generating commit message. Please hold on ...'
       );
 
-      const prompt = `You are a professional developer writing concise and clear commit messages.
-Based on the following git diff, generate a short, conventional commit message (one line, max 72 characters):
+      
+      const fileName = files[0] || 'unknown file';
+      
+      const prompt = `You are a professional developer writing commit messages following the Conventional Commits specification.
 
+Based on the following git diff for "${fileName}", generate a commit message following these rules:
+1. Start with a type: feat, fix, chore, docs, style, refactor, test, or perf
+2. Follow with a colon and space
+3. Write a clear, concise description (max 50 characters)
+4. Use imperative mood ("add" not "added")
+5. Don't end with a period
+
+File: ${fileName}
+Changes: +${stats.additions} additions, -${stats.deletions} deletions
+
+Git diff:
 ${diff}
 
-Return only the commit message, nothing else.`;
+Return ONLY the commit message (one line), nothing else.`;
 
       const result = await model.generateContent(prompt);
-      const commitMessage = result.response.text().trim();
+      console.log('Gemini raw result:', result);
+      const commitMessage = result.response?.text?.()?.trim() || '';
 
       return commitMessage || 'No response from Gemini.';
     } catch (error: any) {
-      vscode.window.showErrorMessage(`Gemini API Error: ${error.message}`);
       console.error('Gemini API Error:', error);
+      
+      
+      if (error.message?.includes('503') || error.message?.includes('overloaded')) {
+        const action = await vscode.window.showErrorMessage(
+          ' Gemini API is temporarily overloaded. Please wait a moment and try again.',
+          'Retry',
+          'Reset API Key',
+          'Cancel'
+        );
+        
+        if (action === 'Retry') {
+          await new Promise(resolve => setTimeout(resolve, 3000));
+          return this.generateCommitMessage(diff, files, stats);
+        } else if (action === 'Reset API Key') {
+          await this.resetApiKey();
+        }
+      } else if (error.message?.includes('API_KEY_INVALID') || error.message?.includes('401') || error.message?.includes('403')) {
+        const action = await vscode.window.showErrorMessage(
+          ' Invalid API key. Get a valid key from https://aistudio.google.com/apikey',
+          'Reset API Key',
+          'Cancel'
+        );
+        
+        if (action === 'Reset API Key') {
+          await this.resetApiKey();
+        }
+      } else if (error.message?.includes('quota') || error.message?.includes('RESOURCE_EXHAUSTED')) {
+        vscode.window.showErrorMessage(
+          ' API quota exceeded. Your free tier limit may be reached. Check https://aistudio.google.com/'
+        );
+      } else {
+        vscode.window.showErrorMessage(` Gemini API Error: ${error.message}`);
+      }
+      
       return null;
     }
   }
