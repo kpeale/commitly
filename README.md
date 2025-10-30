@@ -17,9 +17,8 @@ AI-Generated Commit Messages — Analyzes your staged Git diff and generates a c
 
  * Retry, Reset & Recover — Gracefully handles invalid keys, rate limits, and overloaded requests.
 
-\!\[feature X\]\(images/feature-x.png\)
+\!\[Commitly demo\]\(images/feature-x.gif\)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
 
 ## Requirements
 
@@ -63,8 +62,7 @@ Ctrl+5 (Windows/Linux) or Cmd+5 (macOS) — Reset Gemini API Key
 
 ### Author
 
-Built with ❤️ by Kpeale Legbara
-Frontend Developer & AI Enthusiast
+Built with ❤️ by Kpeale Legbara. She is a frontend Developer, technical writer & AI Enthusiast
 
 ### 1.0.1
 
