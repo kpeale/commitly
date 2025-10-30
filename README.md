@@ -17,7 +17,7 @@ AI-Generated Commit Messages — Analyzes your staged Git diff and generates a c
 
  * Retry, Reset & Recover — Gracefully handles invalid keys, rate limits, and overloaded requests.
 
-\!\[Commitly demo\]\(images/feature-x.gif\)
+![Commitly demo\] (images/feature-x.gif)
 
 
 ## Requirements
