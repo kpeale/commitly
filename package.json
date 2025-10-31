@@ -1,6 +1,6 @@
 {
-  "name": "commitly",
-  "displayName": "commitly",
+  "name": "commitly-gen",
+  "displayName": "commitly-gen",
   "publisher": "kpealelegbara",
   "description": "An AI-powered assistant to help write better Git commit messages",
   "version": "0.0.1",
