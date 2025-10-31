@@ -1,8 +1,13 @@
 {
   "name": "commitly",
   "displayName": "commitly",
+  "publisher": "kpealelegbara",
   "description": "An AI-powered assistant to help write better Git commit messages",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kpeale/commitly"
+  },
   "engines": {
     "vscode": "^1.105.0"
   },
