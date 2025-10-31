@@ -3,6 +3,11 @@
 Commitly helps developers write clear, consistent, and conventional Git commit messages — powered by Google Gemini AI.
 Whether you forget your commit conventions or just want to save time, Commitly makes your commits smarter, faster, and better.
 
+## How to use Commitly
+Search for commitly-gen in the Vscode extension market place and download it.
+Make a change to any repository of your choice and stage your change.
+Click on the zapt icon and follow the instructions to generate your commit message
+
 ## Features
 
 AI-Generated Commit Messages — Analyzes your staged Git diff and generates a concise commit message that follows Conventional Commits which most developer do not follow. 
