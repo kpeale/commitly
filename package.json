@@ -3,7 +3,7 @@
   "displayName": "commitly-gen",
   "publisher": "kpealelegbara",
   "description": "An AI-powered assistant to help write better Git commit messages",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/kpeale/commitly"
